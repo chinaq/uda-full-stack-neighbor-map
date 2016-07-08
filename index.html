@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <!-- Latest compiled and minified CSS -->
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css" 
+    integrity="sha384-1q8mTJOASx8j1Au+a5WDVnPi2lkFfwwEAa8hDDdjZlpLegxhjVME1fgjWPGmkzs7" crossorigin="anonymous">
+    <!-- Optional theme -->
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap-theme.min.css" 
+    integrity="sha384-fLW2N01lMqjakBkx3l/M9EahuwpSfeNvV63J5ezn3uZzapT0u7EYsXMjQV+0En5r" crossorigin="anonymous">
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootswatch/3.3.6/yeti/bootstrap.min.css">
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.6.3/css/font-awesome.min.css">
+    <link rel="stylesheet" type="text/css" href="/css/style.css"></link>  
+  </head>
+  <body>
+    <div id="sidebar">
+        <div class="form-group">
+          <input id="filter" type="text" class="form-control" data-bind="textInput: filter" placeholder="Filter">
+        </div>
+        <ul class="nav" data-bind="foreach: filtNeighbor">
+			<li><a data-bind="text: name, click: $parent.showMarker, attr:{id:neighbor_id}" href="#"></a></li>            
+		</ul>
+    </div>
+    <div id="wrapper">
+      <nav class="navbar navbar-inverse">
+        <div class="container-fluid">
+          <ul class="nav navbar-nav navbar-left">
+            <li>
+              <button id="sidebarToggle" class="btn">
+                <i class="fa fa-angle-left"></i>
+              </button>
+            </li>
+          </ul>
+          <a class="navbar-brand">Neighbor Map</a>
+        </div>
+      </nav>
+      <!--<div id="main" class="container-fluid">-->
+        <div id="map"></div>
+      <!--</div>-->
+    </div>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.0.0/jquery.min.js"></script>
+    <!-- jQuery (necessary for Bootstrap's JavaScript plugins) -->
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.3/jquery.min.js"></script>
+    <!-- Latest compiled and minified JavaScript -->
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/js/bootstrap.min.js" 
+    integrity="sha384-0mSbJDEHialfmuBBQP6A4Qrprq5OVfW37PRR3j5ELqxss1yVqOtnepnHVP9aJ7xS" crossorigin="anonymous"></script>    
+    <script type="text/javascript" src="/js/qdata.js"></script>
+    <script type="text/javascript" src="/js/qmap.js"></script>
+    <!--<script async defer src="https://maps.googleapis.com/maps/api/js?key=AIzaSyBcFqGtH0HboycQJIWoomh2aOp8-TFS8YU&callback=initMap"></script>-->
+    <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyBcFqGtH0HboycQJIWoomh2aOp8-TFS8YU&callback=initMap"></script>
+    <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/knockout/3.4.0/knockout-min.js"></script>
+    <script type="text/javascript" src="/js/qko.js"></script>
+    <script type="text/javascript" src="/js/qsite.js"></script>
+  </body>
+</html>
