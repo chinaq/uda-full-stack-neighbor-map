@@ -1,21 +1,24 @@
-var map;
+
 function initMap() {
     map = new google.maps.Map(document.getElementById('map'), {
         center: {lat: -34.397, lng: 150.644},
-        zoom: 15
+        zoom: 12
     });
     var geocoder = new google.maps.Geocoder();
     geocodeAddress(geocoder, map);
+    ko.applyBindings(viewModel);
 }
 
 
-marker_dics = {};
+
 function geocodeAddress(geocoder, resultsMap) {
+    var infowindow = new google.maps.InfoWindow();
     $.each(neighbor_datas, function(){  
         var neighbor_id = this.neighbor_id;
         var name = this.name;            
         var address = this.address;     
         var intro = this.intro;
+        var yelp_id = this. yelp_id;
         geocoder.geocode({'address': address}, function(results, status) {
             if (status === google.maps.GeocoderStatus.OK) {
                 resultsMap.setCenter(results[0].geometry.location);
@@ -24,31 +27,54 @@ function geocodeAddress(geocoder, resultsMap) {
                     position: results[0].geometry.location,
                     animation: google.maps.Animation.DROP
                 });
-                var contentString = 
-                    '<div id="content">'+
-                        '<div id="siteNotice">'+
-                        '</div>'+
-                            '<h1 id="firstHeading" class="firstHeading">' + name + '</h1>'+
-                            '<div id="bodyContent">'+
-                            '<p>' + intro + '</p>'+
-                        '</div>'+
-                    '</div>';
-                var infowindow = new google.maps.InfoWindow({
-                    content: contentString
-                });
+                // var infowindow = new google.maps.InfoWindow();
                 // maker listener
                 marker.addListener('click', function() {
-                    infowindow.open(map, marker);
+                    showYelpInfo(
+                        yelp_id,
+                        function(yelp_intro){
+                            // var y_intro = yelp_intro;
+                            marker.setAnimation(google.maps.Animation.BOUNCE);
+                            window.setTimeout(function() {
+                                marker.setAnimation(null);                                
+                            }, 3000);
+
+                            // var infowindow = new google.maps.InfoWindow({
+                            //     content:                     '<div id="content">'+
+                            //         '<div id="siteNotice">'+
+                            //         '</div>'+
+                            //             '<h1 id="firstHeading" class="firstHeading">' + name + '</h1>'+
+                            //             '<div id="bodyContent">'+
+                            //             '<p>' + yelp_intro + '</p>'+
+                            //         '</div>'+
+                            //     '</div>'
+                            // }); 
+                            infowindow.setContent(
+                                '<div id="content">'+
+                                    '<div id="siteNotice">'+
+                                    '</div>'+
+                                        '<h1 id="firstHeading" class="firstHeading">' + name + '</h1>'+
+                                        '<div id="bodyContent">'+
+                                        '<p>' + yelp_intro + '</p>'+
+                                    '</div>'+
+                                '</div>'
+                            ); 
+                            // console.log("infowindow.content: " + infowindow.content);
+                            infowindow.open(map, marker);
+                            // console.log("infowindow.opened");
+                        }
+                    );                    
                 });
                 marker_dics[neighbor_id] = marker;
-                // button listener
-                // var btnStandford = document.getElementById(neighbor_id);
-                // google.maps.event.addDomListener(btnStandford, "click", function(){
-                //     google.maps.event.trigger(marker, "click");
-                // });
             } else {
                 alert('Geocode was not successful for the following reason: ' + status);
             }
         });
     });     
 }
+
+
+function googleError() {
+    alert("google map is on error.");
+}
+

@@ -16,6 +16,9 @@ handlers:
   static_dir: js
 
 # re-direct to index.html if no path is give
+- url: /yelptest
+  static_dir: yelptest
+
 - url: /
   static_files: index.html
   upload: index.html

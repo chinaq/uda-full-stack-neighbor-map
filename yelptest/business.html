@@ -1,0 +1,69 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Neighborhood Map: Test fo Yelp</title>
+    <link rel="stylesheet" href="/css/style.css">
+    <script src="//cdn.bootcss.com/jquery/3.1.0/jquery.min.js"></script>
+    <script src="/js/lib/oauth-signature.min.js"></script>
+  </head>
+  <body>
+      <button id="get-yelp">Yelp Business</button>
+      <div id="data-block"></div>
+
+        <script>
+        var result="";
+        getYelpInfo = function(){
+            function nonce_generate() {
+                return (Math.floor(Math.random() * 1e12).toString());
+            }            
+            var yelp_url = "http://api.yelp.com/v2/business/evvia-estiatorio-palo-alto";
+            // yelp keys
+            var YELP_KEY = "8vGgNg_wQ9tKrhrmN-CUzQ";
+            var YELP_KEY_SECRET = "djAFHxZ3c93ggZCUKDpTT3j0usU";
+            var YELP_TOKEN = "z0WPJFOxNCwCA0o0jmkOO8oinBscMi0Y";
+            var YELP_TOKEN_SECRET = "_EvZ3v4jgf58FJlWw67hfWF4o-0";
+            
+            var parameters = {
+                oauth_consumer_key: YELP_KEY,
+                oauth_token: YELP_TOKEN,
+                oauth_nonce: nonce_generate(),
+                oauth_timestamp: Math.floor(Date.now()/1000),
+                oauth_signature_method: "HMAC-SHA1",
+                oauth_version : "1.0",
+                callback: "cb"           // This is crucial to include for jsonp implementation in AJAX or else the oauth-signature will be wrong.
+            };
+
+            var encodedSignature = oauthSignature.generate("GET",yelp_url, parameters, YELP_KEY_SECRET, YELP_TOKEN_SECRET);
+            parameters.oauth_signature = encodedSignature;
+
+            var settings = {
+                url: yelp_url,
+                data: parameters,
+                cache: true,                // This is crucial to include as well to prevent jQuery from adding on a cache-buster parameter "_=23489489749837", invalidating our oauth-signature
+                dataType: "jsonp",
+                success: function(yelpResults) {
+                    // store yelp results into totalResults array
+                    result = yelpResults;                    
+                    $("#data-block").text(result.snippet_text);
+                },
+                fail: function(xhr, status, error) {
+                    console.log("An AJAX error occured: " + status + "\nError: " + error + "\nError detail: " + xhr.responseText);
+                    result = "it is an error";
+                    $("#data-block").text(result);
+                }
+            };
+            // Send AJAX query via jQuery library.
+            $.ajax(settings);
+        };
+
+        $(document).ready(function(){
+            $("#get-yelp").click(function(){
+                getYelpInfo();
+            });
+        });
+        </script>
+    </body>
+</html>

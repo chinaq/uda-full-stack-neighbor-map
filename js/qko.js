@@ -43,4 +43,3 @@ var Neighbor = function(data){
 }
 
 var viewModel = new NeighborViewModel();
-ko.applyBindings(viewModel);
